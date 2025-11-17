@@ -1,1 +1,29 @@
 @import "tailwindcss";
+
+:root {
+	--accent: #dd4a48;
+	--accent-dark: #c23c39;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	min-height: 100vh;
+	font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+	color: #1f1f1f;
+	line-height: 1.6;
+	background: linear-gradient(180deg, #f5f3ef 0%, #fffdfa 100%);
+}
+
+a {
+	color: var(--accent);
+	text-decoration: none;
+	transition: color 150ms ease;
+}
+
+a:hover {
+	color: var(--accent-dark);
+}
