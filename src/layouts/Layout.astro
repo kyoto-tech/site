@@ -1,14 +1,17 @@
 ---
 import "../styles/global.css";
-const activeLang = Astro.currentLocale;
+import { useTranslations } from "../i18n/utils";
+
+const activeLang = Astro.currentLocale as keyof typeof import("../i18n/ui").ui;
+const t = useTranslations(activeLang);
 ---
 
 <!doctype html>
-<html lang={activeLang}>
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.png" />
+	<html lang={activeLang}>
+		<head>
+			<meta charset="UTF-8" />
+			<meta name="viewport" content="width=device-width, initial-scale=1" />
+			<link rel="icon" type="image/svg+xml" href="/favicon.png" />
 		<meta name="generator" content={Astro.generator} />
 		<meta
 			name="description"
@@ -35,8 +38,9 @@ const activeLang = Astro.currentLocale;
 		<meta name="twitter:image" content="https://kyoto-tech.github.io/og/kyoto-tech-meetup.jpg" />
 		<meta name="twitter:image:alt" content="Community meetup in Kyoto for builders and technologists" />
 		<title>Kyoto Tech Meetup</title>
-	</head>
-	<body>
-		<slot />
-	</body>
-</html>
+		</head>
+		<body>
+			<a class="skip-link" href="#main-content">{t("a11y.skipToMain")}</a>
+			<slot />
+		</body>
+	</html>

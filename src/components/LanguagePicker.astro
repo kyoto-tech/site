@@ -3,24 +3,41 @@ import { languages } from '../i18n/ui';
 import { getRelativeLocaleUrl } from 'astro:i18n';
 
 const langsToFlags = {
-    en: 'GB.svg',
-    ja: 'JP.svg',
+	en: "GB.svg",
+	ja: "JP.svg"
 };
 
 const activeLang = Astro.currentLocale;
-const visibleLangs = Object.entries(languages).filter(([lang]) => lang !== activeLang);
+const allLangs = Object.entries(languages);
 
 ---
 <ul class="absolute top-4 right-4 md:top-6 md:right-6 z-20 flex gap-2">
-    {visibleLangs.map(([lang, label]) => (
-            <li>
-                <a
-                    href={getRelativeLocaleUrl(lang, "/")}
-                    class="block p-2 md:p-3 rounded-lg bg-white/20 backdrop-blur-sm hover:bg-white/30 transition-colors shadow-lg ring-1 ring-white/30"
-                    title={label}
-                >
-                    <img src={`/flags/${langsToFlags[lang]}`} alt={label} width="24" height="16" class="w-6 h-4 md:w-8 md:h-5" />
-                </a>
-            </li>
-    ))}
+	{allLangs.map(([lang, label]) => {
+		const isActive = lang === activeLang;
+
+		return (
+			<li>
+				<a
+					href={getRelativeLocaleUrl(lang, "/")}
+					class="flex min-h-11 min-w-[3rem] items-center gap-2 rounded-lg bg-white/20 px-3 py-2 md:px-3.5 md:py-2.5 backdrop-blur-sm hover:bg-white/30 transition-colors shadow-lg ring-1 ring-white/30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+					title={label}
+					aria-label={`Switch language to ${label}`}
+					aria-current={isActive ? "true" : undefined}
+				>
+					<span class="sr-only">{label}</span>
+					<img
+						src={`/flags/${langsToFlags[lang]}`}
+						alt=""
+						aria-hidden="true"
+						width="24"
+						height="16"
+						class="w-6 h-4 md:w-8 md:h-5"
+					/>
+					<span class="text-xs font-semibold uppercase tracking-wide text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.35)]">
+						{lang === "ja" ? "日本語" : "EN"}
+					</span>
+				</a>
+			</li>
+		);
+	})}
 </ul>
