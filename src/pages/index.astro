@@ -9,6 +9,10 @@ import LanguagePicker from '../components/LanguagePicker.astro';
 const { lang = 'en' } = Astro.props;
 const t = useTranslations(lang);
 
+const meetupUrl = lang === 'ja'
+	? 'https://www.meetup.com/ja-JP/kyoto-tech-meetup/'
+	: 'https://www.meetup.com/kyoto-tech-meetup/';
+
 type ActivityContent =
 	| {
 			type: "paragraph";
@@ -101,7 +105,7 @@ const activities: Activity[] = [
 			</p>
 			<a
 				class="mt-8 inline-flex items-center justify-center rounded-full bg-(--accent) px-6 py-3 text-base font-semibold text-white! shadow-xl shadow-black/30 transition hover:-translate-y-0.5 hover:bg-(--accent-dark) hover:text-white!"
-				href="https://www.meetup.com/kyoto-tech-meetup/"
+				href={meetupUrl}
 				target="_blank"
 				rel="noreferrer"
 			>
@@ -190,7 +194,7 @@ const activities: Activity[] = [
 				<li>
 					<a
 						class="flex items-center gap-2 transition hover:text-white"
-						href="https://www.meetup.com/kyoto-tech-meetup/"
+						href={meetupUrl}
 						target="_blank"
 						rel="noreferrer"
 					>
