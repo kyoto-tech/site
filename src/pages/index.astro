@@ -117,7 +117,7 @@ const activities: Activity[] = [
 		<LanguagePicker />
 	</header>
 
-	<main class="space-y-0">
+	<main id="main-content" class="space-y-0">
 		<section id="why-join" class="bg-white/95 px-6 py-16 md:px-12">
 			<div class="mx-auto max-w-5xl">
 				<p class="text-sm font-semibold uppercase tracking-[0.3em] text-slate-500">{t("home.whyJoin.label")}</p>
@@ -182,41 +182,43 @@ const activities: Activity[] = [
 		</section>
 	</main>
 
-	<footer class="bg-stone-950 px-6 py-12 text-slate-100 md:px-12">
-		<div class="mx-auto flex max-w-5xl flex-col gap-6 md:flex-row md:items-center md:justify-between">
-			<p class="text-sm text-slate-300">© {new Date().getFullYear()} {t("home.footer.copyright")}</p>
-			<ul class="flex flex-wrap gap-4 text-sm font-medium text-slate-200">
-				<li>
-					<a
-						class="flex items-center gap-2 transition hover:text-white"
-						href="https://github.com/kyoto-tech"
-						target="_blank"
-						rel="noreferrer"
-					>
-						<FaGithub className="text-lg" /> {t("home.footer.github")}
-					</a>
-				</li>
-				<li>
-					<a
-						class="flex items-center gap-2 transition hover:text-white"
-						href="https://discord.gg/mXFWEHDKeu"
-						target="_blank"
-						rel="noreferrer"
-					>
-						<FaDiscord className="text-lg" /> {t("home.footer.discord")}
-					</a>
-				</li>
-				<li>
-					<a
-						class="flex items-center gap-2 transition hover:text-white"
-						href={meetupUrl}
-						target="_blank"
-						rel="noreferrer"
-					>
-						<FaMeetup className="text-lg" /> {t("home.footer.meetup")}
-					</a>
-				</li>
-			</ul>
-		</div>
-	</footer>
-</Layout>
+		<footer class="bg-stone-950 px-6 py-12 text-slate-100 md:px-12">
+			<div class="mx-auto flex max-w-5xl flex-col gap-6 md:flex-row md:items-center md:justify-between">
+				<p class="text-sm text-slate-300">© {new Date().getFullYear()} {t("home.footer.copyright")}</p>
+				<nav aria-label={t("home.footer.socialNavLabel")}>
+					<ul class="flex flex-wrap gap-4 text-sm font-medium text-slate-200">
+						<li>
+							<a
+								class="flex items-center gap-2 transition hover:text-white"
+								href="https://github.com/kyoto-tech"
+								target="_blank"
+								rel="noreferrer"
+							>
+								<FaGithub className="text-lg" /> {t("home.footer.github")}
+							</a>
+						</li>
+						<li>
+							<a
+								class="flex items-center gap-2 transition hover:text-white"
+								href="https://discord.gg/mXFWEHDKeu"
+								target="_blank"
+								rel="noreferrer"
+							>
+								<FaDiscord className="text-lg" /> {t("home.footer.discord")}
+							</a>
+						</li>
+						<li>
+							<a
+								class="flex items-center gap-2 transition hover:text-white"
+								href={meetupUrl}
+								target="_blank"
+								rel="noreferrer"
+							>
+								<FaMeetup className="text-lg" /> {t("home.footer.meetup")}
+							</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
+		</footer>
+	</Layout>

@@ -7,6 +7,8 @@ export const defaultLang = "en";
 
 export const ui = {
     en: {
+        "a11y.skipToMain": "Skip to main content",
+
         "home.header.tagline": "Kyoto Tech Meetup",
         "home.header.title": "Connect, learn, and build together in Japan's cultural heart",
         "home.header.subtitle": "Gatherings for developers, designers, researchers, and founders exploring technology in Kyoto.",
@@ -54,6 +56,7 @@ export const ui = {
         "home.locations.description2": "Exact time and place are in each event invite and reminder email.",
 
         "home.footer.copyright": "Kyoto Tech Meetup. Crafted by volunteers in Kyoto.",
+        "home.footer.socialNavLabel": "Social links",
         "home.footer.github": "GitHub",
         "home.footer.discord": "Discord",
         "home.footer.meetup": "Meetup",
@@ -64,6 +67,8 @@ export const ui = {
         "meta.imageAlt": "Community meetup in Kyoto for builders and technologists",
     },
     ja: {
+        "a11y.skipToMain": "メインコンテンツへスキップ",
+
         "home.header.tagline": "Kyoto Tech Meetup",
         "home.header.title": "日本の文化都市・京都でつながり、学び、ものづくりをしよう",
         "home.header.subtitle": "京都でテクノロジーを探求するデベロッパー、デザイナー、研究者、創業者のための集まりです。",
@@ -112,6 +117,7 @@ export const ui = {
         "home.locations.description2": "具体的な場所と時間は、各イベントの案内メールやリマインダーでお知らせします。",
 
         "home.footer.copyright": "Kyoto Tech Meetup — 京都在住のボランティアによるコミュニティ運営。",
+        "home.footer.socialNavLabel": "ソーシャルリンク",
         "home.footer.github": "GitHub",
         "home.footer.discord": "Discord",
         "home.footer.meetup": "Meetup",
