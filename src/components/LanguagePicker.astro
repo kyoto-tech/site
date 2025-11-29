@@ -1,19 +1,20 @@
 ---
-import { languages } from '../i18n/ui';
-import { getRelativeLocaleUrl } from 'astro:i18n';
+import { languages } from "../i18n/ui";
+import { getRelativeLocaleUrl } from "astro:i18n";
 
 const langsToFlags = {
 	en: "GB.svg",
 	ja: "JP.svg"
-};
+} as const;
 
-const activeLang = Astro.currentLocale;
-const allLangs = Object.entries(languages);
+const activeLang = Astro.currentLocale as "en" | "ja" | undefined;
+const allLangs = Object.entries(languages) as [keyof typeof languages, string][];
 
 ---
 <ul class="absolute top-4 right-4 md:top-6 md:right-6 z-20 flex gap-2">
 	{allLangs.map(([lang, label]) => {
 		const isActive = lang === activeLang;
+		const flag = langsToFlags[lang] ?? "";
 
 		return (
 			<li>
@@ -26,7 +27,7 @@ const allLangs = Object.entries(languages);
 				>
 					<span class="sr-only">{label}</span>
 					<img
-						src={`/flags/${langsToFlags[lang]}`}
+						src={`/flags/${flag}`}
 						alt=""
 						aria-hidden="true"
 						width="24"

@@ -1,39 +1,96 @@
 ---
-import EventList from '../components/EventList.jsx';
-const RSS_URL = "https://www.meetup.com/Kyoto-Tech-Meetup/events/rss/";
+import EventList from "../components/EventList.jsx";
 
-const rssResponse = await fetch(RSS_URL);
-const rssText = await rssResponse.text();
+const EVENTS_URL = "https://www.meetup.com/kyoto-tech-meetup/events/";
 
-// Minimal XML → JS parser
-import { xml2js } from "xml-js";
-const parsed = xml2js(rssText, { compact: true });
-let eventNames = [];
+async function fetchMeetupEvents() {
+	const html = await fetch(EVENTS_URL).then((r) => r.text());
 
-if (Array.isArray(parsed.rss.channel.item)) {
+	// Grab the JSON embedded in the __NEXT_DATA__ script tag
+	const match = html.match(
+		/<script id="__NEXT_DATA__" type="application\/json">([\s\S]*?)<\/script>/
+	);
 
-  const items = parsed.rss.channel.item.map(evt => ({
-    title: evt.title._cdata,
-    link: evt.link._text,
-    pubDate: evt.pubDate._text,
-    description: evt.description?._text ?? "",
-    }));
+	if (!match?.[1]) return [];
 
-    
-  eventNames = items;
-  
-} else {
-  // handle the case where it's a single item object
-  eventNames= [];
+	const data = JSON.parse(match[1]);
+	const apolloState = data?.props?.pageProps?.__APOLLO_STATE__ as
+		| Record<string, any>
+		| undefined;
+	if (!apolloState) return [];
+
+	const now = new Date();
+	const cutoff = new Date();
+	cutoff.setDate(cutoff.getDate() + 60);
+
+	const resolvePhotoUrl = (photoLike: any) => {
+		const ref =
+			(typeof photoLike === "string" && photoLike.startsWith("PhotoInfo:"))
+				? photoLike
+				: photoLike?.__ref ??
+				  (photoLike?.id ? `PhotoInfo:${photoLike.id}` : null);
+
+		if (!ref) return null;
+		const photo = apolloState[ref];
+		if (!photo) return null;
+
+		return (
+			photo.highResUrl ??
+			photo.source ??
+			(photo.baseUrl && photo.id ? `${photo.baseUrl}${photo.id}` : null)
+		);
+	};
+
+	const resolveVenue = (venueLike: any) => {
+		const ref =
+			(typeof venueLike === "string" && venueLike.startsWith("Venue:"))
+				? venueLike
+				: venueLike?.__ref ??
+				  (venueLike?.id ? `Venue:${venueLike.id}` : null);
+
+		const venue = ref ? apolloState[ref] : venueLike;
+		if (!venue) return null;
+
+		return {
+			name: venue.name,
+			address: venue.address,
+			city: venue.city,
+			state: venue.state,
+			country: venue.country
+		};
+	};
+
+	const events = Object.entries(apolloState)
+		.filter(([key, value]) => key.startsWith("Event:") && (value as any)?.dateTime)
+		.map(([, rawValue]) => {
+			const value = rawValue as any;
+			return {
+				title: value.title?.replace(" | Kyoto Tech Meetup", "") ?? value.title,
+				link: value.eventUrl,
+				start: value.dateTime,
+				endTime: value.endTime ?? null,
+				description: value.description ?? "",
+				image: resolvePhotoUrl(value.featuredEventPhoto),
+				goingCount: value.going?.totalCount ?? 0,
+				interestedCount: value.socialProofInsights?.totalInterestedUsers ?? 0,
+				venue: resolveVenue(value.venue)
+			};
+		})
+		.filter((evt) => {
+			const start = new Date(evt.start);
+			return start >= now && start <= cutoff;
+		})
+		.sort((a, b) => new Date(a.start).valueOf() - new Date(b.start).valueOf());
+
+	return events;
 }
 
-console.log("hello" + eventNames);
+const events = await fetchMeetupEvents();
 
 ---
 
-<section class="p-6">
+<section class="pt-6 pb-6">
 
-  <EventList client:load events={eventNames} />
+  <EventList client:load events={events} />
 
 </section>
-

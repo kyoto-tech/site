@@ -3,17 +3,16 @@ import Layout from "../layouts/Layout.astro";
 import WhyJoin from "../components/WhyJoin.astro";
 import WhatWeDo from "../components/WhatWeDo.astro";
 import Calendar from "../components/Calendar.astro";
-import EventList from "../components/EventList.jsx";
 import { FaGithub, FaDiscord, FaMeetup } from "react-icons/fa";
-import { useTranslations } from '../i18n/utils';
-import LanguagePicker from '../components/LanguagePicker.astro';
+import { useTranslations } from "../i18n/utils";
+import LanguagePicker from "../components/LanguagePicker.astro";
 
-const { lang = 'en' } = Astro.props;
+const { lang = "en" } = Astro.props;
 const t = useTranslations(lang);
 
-const meetupUrl = lang === 'ja'
-	? 'https://www.meetup.com/ja-JP/kyoto-tech-meetup/'
-	: 'https://www.meetup.com/kyoto-tech-meetup/';
+const meetupUrl = lang === "ja"
+	? "https://www.meetup.com/ja-JP/kyoto-tech-meetup/"
+	: "https://www.meetup.com/kyoto-tech-meetup/";
 
 type ActivityContent =
 	| {
