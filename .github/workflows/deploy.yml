@@ -3,9 +3,11 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main
-  pull_request:
-  workflow_dispatch:
+      - main           # only merges (or any push) to main
+  workflow_dispatch:   # manual runs
+  schedule:
+    # every 3 hours (hours divisible by 3)
+    - cron: '0 */3 * * *'
 
 permissions:
   contents: read
@@ -41,7 +43,12 @@ jobs:
           path: dist
 
   deploy:
-    if: github.event_name == 'push'
+    # Run deploy only when the workflow is running against main
+    # This allows:
+    # - push to main (i.e., merge to main)
+    # - workflow_dispatch on main
+    # - schedule on main (default)
+    if: github.ref == 'refs/heads/main'
     needs: build
     runs-on: ubuntu-latest
     environment:
